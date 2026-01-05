@@ -1,0 +1,188 @@
+import React, { useState, useMemo } from 'react';
+import { Calculator, DollarSign, Droplets, Package } from 'lucide-react';
+
+export default function ChickenFeedCalculator() {
+  const [numChickens, setNumChickens] = useState('');
+  const [sellingPrice, setSellingPrice] = useState('');
+  const [feedBagPrice, setFeedBagPrice] = useState('');
+
+  const calculations = useMemo(() => {
+    // Return null if any input is empty
+    if (!numChickens || !sellingPrice || !feedBagPrice) {
+      return null;
+    }
+
+    const chickens = Number(numChickens);
+    const price = Number(sellingPrice);
+    const bagPrice = Number(feedBagPrice);
+
+    // Feed calculation (6-7 kg per chicken based on 300-350kg for 50 chickens)
+    const feedPerChicken = 6.5; // average of 6-7 kg
+    const totalFeedKg = chickens * feedPerChicken;
+    const feedBagsNeeded = totalFeedKg / 50;
+    const totalFeedCost = feedBagsNeeded * bagPrice;
+
+    // Water calculation (3-5 liters per chicken based on 150-250L for 50 chickens)
+    const waterPerChicken = 4; // average of 3-5 liters
+    const totalWaterLiters = chickens * waterPerChicken;
+
+    // Revenue calculations
+    const grossRevenue = chickens * price;
+    
+    // With 30% profit margin, cost is 70% of selling price
+    const costPerChicken = price * 0.7;
+    const totalCost = chickens * costPerChicken;
+    const netIncome = grossRevenue - totalCost;
+
+    return {
+      totalFeedKg: totalFeedKg.toFixed(1),
+      feedBagsNeeded: feedBagsNeeded.toFixed(1),
+      totalFeedCost: totalFeedCost.toFixed(2),
+      totalWaterLiters: totalWaterLiters.toFixed(0),
+      grossRevenue: grossRevenue.toFixed(2),
+      totalCost: totalCost.toFixed(2),
+      netIncome: netIncome.toFixed(2),
+      profitMargin: 30
+    };
+  }, [numChickens, sellingPrice, feedBagPrice]);
+
+  return (
+    <div className="min-h-screen bg-gradient-to-br from-amber-50 to-orange-100 p-4 md:p-8">
+      <div className="max-w-4xl mx-auto">
+        <div className="bg-white rounded-2xl shadow-2xl overflow-hidden">
+          {/* Header */}
+          <div className="bg-gradient-to-r from-amber-600 to-orange-600 p-6 text-white">
+            <div className="flex items-center gap-3">
+              <Calculator className="w-8 h-8" />
+              <h1 className="text-3xl font-bold">Chicken Feed Calculator</h1>
+            </div>
+            <p className="mt-2 text-amber-100">Calculate costs, revenue, and resource usage for your chicken farming</p>
+          </div>
+
+          {/* Input Section */}
+          <div className="p-6 bg-gray-50 border-b">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Input Parameters</h2>
+            <div className="grid md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Number of Chickens
+                </label>
+                <input
+                  type="number"
+                  min="1"
+                  value={numChickens}
+                  onChange={(e) => setNumChickens(Number(e.target.value))}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Selling Price per Chicken ($)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={sellingPrice}
+                  onChange={(e) => setSellingPrice(Number(e.target.value))}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Price per 50kg Feed Bag ($)
+                </label>
+                <input
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value={feedBagPrice}
+                  onChange={(e) => setFeedBagPrice(Number(e.target.value))}
+                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-amber-500 focus:border-transparent"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Results Section */}
+          <div className="p-6 space-y-6">
+            {!calculations ? (
+              <div className="text-center py-12">
+                <Calculator className="w-16 h-16 text-gray-300 mx-auto mb-4" />
+                <p className="text-gray-500 text-lg">Enter all values above to see your calculations</p>
+              </div>
+            ) : (
+              <>
+            {/* Financial Results */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <DollarSign className="w-6 h-6 text-green-600" />
+                <h2 className="text-xl font-semibold text-gray-800">Financial Overview</h2>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="bg-green-50 p-4 rounded-lg border border-green-200">
+                  <p className="text-sm text-green-700 font-medium">Gross Revenue</p>
+                  <p className="text-2xl font-bold text-green-800 mt-1">${calculations.grossRevenue}</p>
+                </div>
+                <div className="bg-red-50 p-4 rounded-lg border border-red-200">
+                  <p className="text-sm text-red-700 font-medium">Total Cost (70%)</p>
+                  <p className="text-2xl font-bold text-red-800 mt-1">${calculations.totalCost}</p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                  <p className="text-sm text-blue-700 font-medium">Net Income (30%)</p>
+                  <p className="text-2xl font-bold text-blue-800 mt-1">${calculations.netIncome}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Feed Requirements */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Package className="w-6 h-6 text-amber-600" />
+                <h2 className="text-xl font-semibold text-gray-800">Feed Requirements</h2>
+              </div>
+              <div className="grid md:grid-cols-3 gap-4">
+                <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                  <p className="text-sm text-amber-700 font-medium">Total Feed Needed</p>
+                  <p className="text-2xl font-bold text-amber-800 mt-1">{calculations.totalFeedKg} kg</p>
+                </div>
+                <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                  <p className="text-sm text-amber-700 font-medium">Feed Bags (50kg)</p>
+                  <p className="text-2xl font-bold text-amber-800 mt-1">{calculations.feedBagsNeeded}</p>
+                </div>
+                <div className="bg-amber-50 p-4 rounded-lg border border-amber-200">
+                  <p className="text-sm text-amber-700 font-medium">Feed Cost</p>
+                  <p className="text-2xl font-bold text-amber-800 mt-1">${calculations.totalFeedCost}</p>
+                </div>
+              </div>
+            </div>
+
+            {/* Water Requirements */}
+            <div>
+              <div className="flex items-center gap-2 mb-4">
+                <Droplets className="w-6 h-6 text-blue-600" />
+                <h2 className="text-xl font-semibold text-gray-800">Water Requirements</h2>
+              </div>
+              <div className="bg-blue-50 p-4 rounded-lg border border-blue-200">
+                <p className="text-sm text-blue-700 font-medium">Total Water Needed</p>
+                <p className="text-2xl font-bold text-blue-800 mt-1">{calculations.totalWaterLiters} liters</p>
+                <p className="text-xs text-blue-600 mt-2">Based on 3-5 liters per chicken</p>
+              </div>
+            </div>
+
+            {/* Info Note */}
+            <div className="bg-gray-100 p-4 rounded-lg border border-gray-300">
+              <p className="text-sm text-gray-700">
+                <strong>Note:</strong> Calculations are based on industry averages where 50 chickens consume 300-350kg of feed 
+                and 150-250 liters of water. The profit margin is set at 30% of the selling price.
+              </p>
+            </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
