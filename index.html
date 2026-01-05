@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Calculate costs, revenue, and resource usage for your chicken farming business with our free chicken feed calculator.">
+    <title>Chicken Feed Calculator | Farming Cost Calculator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+        }
+        
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+        
+        .card {
+            background: white;
+            border-radius: 1.5rem;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
+            color: white;
+            padding: 2rem;
+        }
+        
+        .header h1 {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .header p {
+            color: #fef3c7;
+            font-size: 0.95rem;
+        }
+        
+        .inputs-section {
+            background: #f9fafb;
+            padding: 2rem;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .inputs-section h2 {
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+        
+        .input-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+        }
+        
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .input-group label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 0.5rem;
+        }
+        
+        .input-group input {
+            padding: 0.75rem 1rem;
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            font-size: 1rem;
+            transition: all 0.2s;
+        }
+        
+        .input-group input:focus {
+            outline: none;
+            border-color: #d97706;
+            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+        }
+        
+        .results-section {
+            padding: 2rem;
+        }
+        
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.25rem;
+            margin-bottom: 1.5rem;
+            color: #1f2937;
+        }
+        
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2.5rem;
+        }
+        
+        .result-card {
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border: 2px solid;
+        }
+        
+        .result-card.green {
+            background: #f0fdf4;
+            border-color: #86efac;
+        }
+        
+        .result-card.red {
+            background: #fef2f2;
+            border-color: #fca5a5;
+        }
+        
+        .result-card.blue {
+            background: #eff6ff;
+            border-color: #93c5fd;
+        }
+        
+        .result-card.amber {
+            background: #fefce8;
+            border-color: #fde047;
+        }
+        
+        .result-label {
+            font-size: 0.875rem;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+        }
+        
+        .result-card.green .result-label {
+            color: #166534;
+        }
+        
+        .result-card.red .result-label {
+            color: #991b1b;
+        }
+        
+        .result-card.blue .result-label {
+            color: #1e40af;
+        }
+        
+        .result-card.amber .result-label {
+            color: #854d0e;
+        }
+        
+        .result-value {
+            font-size: 1.875rem;
+            font-weight: 700;
+        }
+        
+        .result-card.green .result-value {
+            color: #15803d;
+        }
+        
+        .result-card.red .result-value {
+            color: #b91c1c;
+        }
+        
+        .result-card.blue .result-value {
+            color: #1e3a8a;
+        }
+        
+        .result-card.amber .result-value {
+            color: #92400e;
+        }
+        
+        .info-note {
+            background: #f3f4f6;
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            border: 1px solid #d1d5db;
+            margin-top: 2rem;
+        }
+        
+        .info-note p {
+            font-size: 0.875rem;
+            color: #374151;
+            line-height: 1.6;
+        }
+        
+        .info-note strong {
+            color: #1f2937;
+        }
+        
+        .hidden {
+            display: none;
+        }
+        
+        .placeholder {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #6b7280;
+        }
+        
+        .placeholder svg {
+            width: 4rem;
+            height: 4rem;
+            margin: 0 auto 1rem;
+            color: #d1d5db;
+        }
+        
+        .placeholder p {
+            font-size: 1.125rem;
+        }
+        
+        @media (max-width: 768px) {
+            body {
+                padding: 1rem 0.5rem;
+            }
+            
+            .header h1 {
+                font-size: 1.5rem;
+            }
+            
+            .inputs-section,
+            .results-section {
+                padding: 1.5rem;
+            }
+            
+            .input-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="card">
+            <!-- Header -->
+            <div class="header">
+                <h1>
+                    <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                    </svg>
+                    Chicken Feed Calculator
+                </h1>
+                <p>Calculate costs, revenue, and resource usage for your chicken farming</p>
+            </div>
+            
+            <!-- Input Section -->
+            <div class="inputs-section">
+                <h2>Input Parameters</h2>
+                <div class="input-grid">
+                    <div class="input-group">
+                        <label for="numChickens">Number of Chickens</label>
+                        <input type="number" id="numChickens" min="1" placeholder="e.g., 50">
+                    </div>
+                    <div class="input-group">
+                        <label for="sellingPrice">Selling Price per Chicken ($)</label>
+                        <input type="number" id="sellingPrice" min="0" step="0.01" placeholder="e.g., 10.00">
+                    </div>
+                    <div class="input-group">
+                        <label for="feedBagPrice">Price per 50kg Feed Bag ($)</label>
+                        <input type="number" id="feedBagPrice" min="0" step="0.01" placeholder="e.g., 25.00">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="results-section">
+                <div id="placeholder" class="placeholder">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="8" rx="2" ry="2"></rect>
+                        <rect x="2" y="14" width="20" height="8" rx="2" ry="2"></rect>
+                        <line x1="6" y1="6" x2="6.01" y2="6"></line>
+                        <line x1="6" y1="18" x2="6.01" y2="18"></line>
+                    </svg>
+                    <p>Enter all values above to see your calculations</p>
+                </div>
+                
+                <div id="results" class="hidden">
+                    <!-- Financial Overview -->
+                    <div class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <line x1="12" y1="1" x2="12" y2="23"></line>
+                            <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
+                        </svg>
+                        Financial Overview
+                    </div>
+                    <div class="results-grid">
+                        <div class="result-card green">
+                            <div class="result-label">Gross Revenue</div>
+                            <div class="result-value" id="grossRevenue">$0.00</div>
+                        </div>
+                        <div class="result-card red">
+                            <div class="result-label">Total Cost (70%)</div>
+                            <div class="result-value" id="totalCost">$0.00</div>
+                        </div>
+                        <div class="result-card blue">
+                            <div class="result-label">Net Income (30%)</div>
+                            <div class="result-value" id="netIncome">$0.00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Feed Requirements -->
+                    <div class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 7h-9"></path>
+                            <path d="M14 17H5"></path>
+                            <circle cx="17" cy="17" r="3"></circle>
+                            <circle cx="7" cy="7" r="3"></circle>
+                        </svg>
+                        Feed Requirements
+                    </div>
+                    <div class="results-grid">
+                        <div class="result-card amber">
+                            <div class="result-label">Total Feed Needed</div>
+                            <div class="result-value" id="totalFeed">0 kg</div>
+                        </div>
+                        <div class="result-card amber">
+                            <div class="result-label">Feed Bags (50kg)</div>
+                            <div class="result-value" id="feedBags">0</div>
+                        </div>
+                        <div class="result-card amber">
+                            <div class="result-label">Feed Cost</div>
+                            <div class="result-value" id="feedCost">$0.00</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Water Requirements -->
+                    <div class="section-title">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+                        </svg>
+                        Water Requirements
+                    </div>
+                    <div class="result-card blue">
+                        <div class="result-label">Total Water Needed</div>
+                        <div class="result-value" id="totalWater">0 liters</div>
+                        <p style="font-size: 0.75rem; color: #1e40af; margin-top: 0.5rem;">Based on 3-5 liters per chicken</p>
+                    </div>
+                    
+                    <!-- Info Note -->
+                    <div class="info-note">
+                        <p>
+                            <strong>Note:</strong> Calculations are based on industry averages where 50 chickens consume 300-350kg of feed 
+                            and 150-250 liters of water. The profit margin is set at 30% of the selling price.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        // Get input elements
+        const numChickensInput = document.getElementById('numChickens');
+        const sellingPriceInput = document.getElementById('sellingPrice');
+        const feedBagPriceInput = document.getElementById('feedBagPrice');
+        
+        // Get result elements
+        const placeholder = document.getElementById('placeholder');
+        const results = document.getElementById('results');
+        const grossRevenue = document.getElementById('grossRevenue');
+        const totalCost = document.getElementById('totalCost');
+        const netIncome = document.getElementById('netIncome');
+        const totalFeed = document.getElementById('totalFeed');
+        const feedBags = document.getElementById('feedBags');
+        const feedCost = document.getElementById('feedCost');
+        const totalWater = document.getElementById('totalWater');
+        
+        // Calculate and update results
+        function calculate() {
+            const numChickens = parseFloat(numChickensInput.value);
+            const sellingPrice = parseFloat(sellingPriceInput.value);
+            const feedBagPrice = parseFloat(feedBagPriceInput.value);
+            
+            // Check if all inputs are filled
+            if (!numChickens || !sellingPrice || !feedBagPrice) {
+                placeholder.classList.remove('hidden');
+                results.classList.add('hidden');
+                return;
+            }
+            
+            // Show results, hide placeholder
+            placeholder.classList.add('hidden');
+            results.classList.remove('hidden');
+            
+            // Feed calculation (6.5 kg per chicken average)
+            const feedPerChicken = 6.5;
+            const totalFeedKg = numChickens * feedPerChicken;
+            const feedBagsNeeded = totalFeedKg / 50;
+            const totalFeedCost = feedBagsNeeded * feedBagPrice;
+            
+            // Water calculation (4 liters per chicken average)
+            const waterPerChicken = 4;
+            const totalWaterLiters = numChickens * waterPerChicken;
+            
+            // Revenue calculations
+            const grossRev = numChickens * sellingPrice;
+            const costPerChicken = sellingPrice * 0.7; // 70% cost
+            const totalCostValue = numChickens * costPerChicken;
+            const netIncomeValue = grossRev - totalCostValue;
+            
+            // Update display
+            grossRevenue.textContent = '$' + grossRev.toFixed(2);
+            totalCost.textContent = '$' + totalCostValue.toFixed(2);
+            netIncome.textContent = '$' + netIncomeValue.toFixed(2);
+            totalFeed.textContent = totalFeedKg.toFixed(1) + ' kg';
+            feedBags.textContent = feedBagsNeeded.toFixed(1);
+            feedCost.textContent = '$' + totalFeedCost.toFixed(2);
+            totalWater.textContent = totalWaterLiters.toFixed(0) + ' liters';
+        }
+        
+        // Add event listeners to all inputs
+        numChickensInput.addEventListener('input', calculate);
+        sellingPriceInput.addEventListener('input', calculate);
+        feedBagPriceInput.addEventListener('input', calculate);
+        
+        // Initial calculation (will show placeholder since inputs are empty)
+        calculate();
+    </script>
+</body>
+</html>
