@@ -14,27 +14,121 @@
         
         body {
             font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 50%, #fcd34d 100%);
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 50%, #0a0a0a 100%);
             min-height: 100vh;
             padding: 2rem 1rem;
+            position: relative;
+            overflow-x: hidden;
+        }
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                repeating-linear-gradient(90deg, rgba(255,215,0,0.03) 0px, rgba(255,215,0,0.03) 2px, transparent 2px, transparent 50px),
+                repeating-linear-gradient(0deg, rgba(255,215,0,0.03) 0px, rgba(255,215,0,0.03) 2px, transparent 2px, transparent 50px);
+            pointer-events: none;
+            z-index: 0;
+        }
+        
+        body::after {
+            content: '';
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(to top, rgba(255,140,0,0.2) 0%, transparent 100%);
+            pointer-events: none;
+            z-index: 0;
         }
         
         .container {
             max-width: 1000px;
             margin: 0 auto;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .container::before {
+            content: '🌾';
+            position: absolute;
+            font-size: 3rem;
+            opacity: 0.15;
+            top: -50px;
+            left: 10%;
+            animation: sway 3s ease-in-out infinite;
+        }
+        
+        .container::after {
+            content: '🌾';
+            position: absolute;
+            font-size: 2.5rem;
+            opacity: 0.15;
+            top: -30px;
+            right: 15%;
+            animation: sway 4s ease-in-out infinite 0.5s;
+        }
+        
+        @keyframes sway {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
         }
         
         .card {
-            background: white;
+            background: #ffffff;
             border-radius: 1.5rem;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             overflow: hidden;
+            border: 3px solid #FFD700;
+            position: relative;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 8px;
+            background: repeating-linear-gradient(
+                90deg,
+                #FFD700 0px,
+                #FFD700 20px,
+                #FFA500 20px,
+                #FFA500 40px
+            );
         }
         
         .header {
-            background: linear-gradient(135deg, #d97706 0%, #ea580c 100%);
-            color: white;
+            background: linear-gradient(135deg, #000000 0%, #1a1a1a 50%, #000000 100%);
+            color: #FFD700;
             padding: 2rem;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '🐔';
+            position: absolute;
+            font-size: 8rem;
+            opacity: 0.1;
+            right: -20px;
+            top: -30px;
+            transform: rotate(-15deg);
+        }
+        
+        .header::after {
+            content: '🌾 🌾 🌾';
+            position: absolute;
+            font-size: 1.5rem;
+            opacity: 0.15;
+            bottom: 10px;
+            left: 20px;
         }
         
         .header h1 {
@@ -46,20 +140,34 @@
         }
         
         .header p {
-            color: #fef3c7;
+            color: #FFA500;
             font-size: 0.95rem;
+            position: relative;
+            z-index: 1;
         }
         
         .inputs-section {
-            background: #f9fafb;
+            background: #f5f5f5;
             padding: 2rem;
-            border-bottom: 1px solid #e5e7eb;
+            border-bottom: 1px solid #FFD700;
+            position: relative;
+        }
+        
+        .inputs-section::before {
+            content: '🥚';
+            position: absolute;
+            font-size: 2rem;
+            opacity: 0.1;
+            top: 20px;
+            right: 30px;
         }
         
         .inputs-section h2 {
             font-size: 1.25rem;
             margin-bottom: 1.5rem;
-            color: #1f2937;
+            color: #000000;
+            position: relative;
+            z-index: 1;
         }
         
         .input-grid {
@@ -76,22 +184,23 @@
         .input-group label {
             font-size: 0.875rem;
             font-weight: 500;
-            color: #374151;
+            color: #000000;
             margin-bottom: 0.5rem;
         }
         
         .input-group input {
             padding: 0.75rem 1rem;
-            border: 1px solid #d1d5db;
+            border: 2px solid #FFD700;
             border-radius: 0.5rem;
             font-size: 1rem;
             transition: all 0.2s;
+            background: white;
         }
         
         .input-group input:focus {
             outline: none;
-            border-color: #d97706;
-            box-shadow: 0 0 0 3px rgba(217, 119, 6, 0.1);
+            border-color: #FFA500;
+            box-shadow: 0 0 0 3px rgba(255, 165, 0, 0.2);
         }
         
         .results-section {
@@ -104,7 +213,7 @@
             gap: 0.5rem;
             font-size: 1.25rem;
             margin-bottom: 1.5rem;
-            color: #1f2937;
+            color: #000000;
         }
         
         .results-grid {
@@ -121,23 +230,23 @@
         }
         
         .result-card.green {
-            background: #f0fdf4;
-            border-color: #86efac;
+            background: #e6f7ff;
+            border-color: #1E90FF;
         }
         
         .result-card.red {
-            background: #fef2f2;
-            border-color: #fca5a5;
+            background: #fff0e6;
+            border-color: #FF8C00;
         }
         
         .result-card.blue {
-            background: #eff6ff;
-            border-color: #93c5fd;
+            background: #e6f7ff;
+            border-color: #4169E1;
         }
         
         .result-card.amber {
-            background: #fefce8;
-            border-color: #fde047;
+            background: #fffbea;
+            border-color: #FFD700;
         }
         
         .result-label {
@@ -147,19 +256,19 @@
         }
         
         .result-card.green .result-label {
-            color: #166534;
+            color: #0066CC;
         }
         
         .result-card.red .result-label {
-            color: #991b1b;
+            color: #CC5500;
         }
         
         .result-card.blue .result-label {
-            color: #1e40af;
+            color: #1E40AF;
         }
         
         .result-card.amber .result-label {
-            color: #854d0e;
+            color: #CC9900;
         }
         
         .result-value {
@@ -168,37 +277,37 @@
         }
         
         .result-card.green .result-value {
-            color: #15803d;
+            color: #0052A3;
         }
         
         .result-card.red .result-value {
-            color: #b91c1c;
+            color: #FF6600;
         }
         
         .result-card.blue .result-value {
-            color: #1e3a8a;
+            color: #1E3A8A;
         }
         
         .result-card.amber .result-value {
-            color: #92400e;
+            color: #B8860B;
         }
         
         .info-note {
-            background: #f3f4f6;
+            background: #fffbea;
             padding: 1.25rem;
             border-radius: 0.75rem;
-            border: 1px solid #d1d5db;
+            border: 2px solid #FFD700;
             margin-top: 2rem;
         }
         
         .info-note p {
             font-size: 0.875rem;
-            color: #374151;
+            color: #000000;
             line-height: 1.6;
         }
         
         .info-note strong {
-            color: #1f2937;
+            color: #000000;
         }
         
         .hidden {
@@ -291,13 +400,13 @@
                 </div>
                 
                 <div id="results" class="hidden">
-                    <!-- Financial Overview -->
+                    <!-- Net Profit Overview -->
                     <div class="section-title">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <line x1="12" y1="1" x2="12" y2="23"></line>
                             <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path>
                         </svg>
-                        Financial Overview
+                        Net Profit (After Feed Costs)
                     </div>
                     <div class="results-grid">
                         <div class="result-card green">
@@ -305,58 +414,65 @@
                             <div class="result-value" id="grossRevenue">$0.00</div>
                         </div>
                         <div class="result-card red">
-                            <div class="result-label">Total Cost (70%)</div>
-                            <div class="result-value" id="totalCost">$0.00</div>
+                            <div class="result-label">Feed Cost</div>
+                            <div class="result-value" id="feedCostDisplay">$0.00</div>
                         </div>
-                        <div class="result-card blue">
-                            <div class="result-label">Net Income (30%)</div>
-                            <div class="result-value" id="netIncome">$0.00</div>
+                        <div class="result-card" id="netProfitCard">
+                            <div class="result-label">Net Profit</div>
+                            <div class="result-value" id="netProfit">$0.00</div>
                         </div>
                     </div>
                     
-                    <!-- Feed Requirements -->
-                    <div class="section-title">
+                    <!-- Industry Standard (30% Margin) -->
+                    <div class="section-title" style="margin-top: 2.5rem;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+                            <polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline>
+                            <line x1="12" y1="22.08" x2="12" y2="12"></line>
+                        </svg>
+                        Industry Standard (30% Profit Margin)
+                    </div>
+                    <div class="result-card blue">
+                        <div class="result-label">Expected Net Income at 30% Margin</div>
+                        <div class="result-value" id="industryProfit">$0.00</div>
+                        <p style="font-size: 0.75rem; color: #1e40af; margin-top: 0.5rem;">Based on standard 30% profit margin after all costs</p>
+                    </div>
+                    
+                    <!-- Feed & Water Requirements -->
+                    <div class="section-title" style="margin-top: 2.5rem;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M20 7h-9"></path>
                             <path d="M14 17H5"></path>
                             <circle cx="17" cy="17" r="3"></circle>
                             <circle cx="7" cy="7" r="3"></circle>
                         </svg>
-                        Feed Requirements
+                        Resource Requirements
                     </div>
                     <div class="results-grid">
                         <div class="result-card amber">
-                            <div class="result-label">Total Feed Needed</div>
-                            <div class="result-value" id="totalFeed">0 kg</div>
-                        </div>
-                        <div class="result-card amber">
                             <div class="result-label">Feed Bags (50kg)</div>
                             <div class="result-value" id="feedBags">0</div>
+                        </div>
+                        <div class="result-card blue">
+                            <div class="result-label">Water Needed</div>
+                            <div class="result-value" id="totalWater">0 L</div>
                         </div>
                         <div class="result-card amber">
                             <div class="result-label">Feed Cost</div>
                             <div class="result-value" id="feedCost">$0.00</div>
                         </div>
-                    </div>
-                    
-                    <!-- Water Requirements -->
-                    <div class="section-title">
-                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
-                        </svg>
-                        Water Requirements
-                    </div>
-                    <div class="result-card blue">
-                        <div class="result-label">Total Water Needed</div>
-                        <div class="result-value" id="totalWater">0 liters</div>
-                        <p style="font-size: 0.75rem; color: #1e40af; margin-top: 0.5rem;">Based on 3-5 liters per chicken</p>
+                        <div class="result-card amber">
+                            <div class="result-label">Total Feed</div>
+                            <div class="result-value" id="totalFeed">0 kg</div>
+                        </div>
                     </div>
                     
                     <!-- Info Note -->
                     <div class="info-note">
                         <p>
-                            <strong>Note:</strong> Calculations are based on industry averages where 50 chickens consume 300-350kg of feed 
-                            and 150-250 liters of water. The profit margin is set at 30% of the selling price.
+                            <strong>Note:</strong> Net Profit shows your actual profit after deducting feed costs from gross revenue. 
+                            The Industry Standard calculation shows expected net income at a typical 30% profit margin. 
+                            Feed calculations are based on 6.5kg per chicken and water at 4 liters per chicken (industry averages: 300-350kg feed and 150-250L water for 50 chickens).
                         </p>
                     </div>
                 </div>
@@ -374,8 +490,10 @@
         const placeholder = document.getElementById('placeholder');
         const results = document.getElementById('results');
         const grossRevenue = document.getElementById('grossRevenue');
-        const totalCost = document.getElementById('totalCost');
-        const netIncome = document.getElementById('netIncome');
+        const feedCostDisplay = document.getElementById('feedCostDisplay');
+        const netProfit = document.getElementById('netProfit');
+        const netProfitCard = document.getElementById('netProfitCard');
+        const industryProfit = document.getElementById('industryProfit');
         const totalFeed = document.getElementById('totalFeed');
         const feedBags = document.getElementById('feedBags');
         const feedCost = document.getElementById('feedCost');
@@ -410,18 +528,29 @@
             
             // Revenue calculations
             const grossRev = numChickens * sellingPrice;
-            const costPerChicken = sellingPrice * 0.7; // 70% cost
-            const totalCostValue = numChickens * costPerChicken;
-            const netIncomeValue = grossRev - totalCostValue;
+            
+            // Net profit after feed costs
+            const netProfitValue = grossRev - totalFeedCost;
+            
+            // Industry standard: 30% profit margin
+            const industryProfitValue = grossRev * 0.30;
             
             // Update display
             grossRevenue.textContent = '$' + grossRev.toFixed(2);
-            totalCost.textContent = '$' + totalCostValue.toFixed(2);
-            netIncome.textContent = '$' + netIncomeValue.toFixed(2);
+            feedCostDisplay.textContent = '$' + totalFeedCost.toFixed(2);
+            netProfit.textContent = '$' + netProfitValue.toFixed(2);
+            industryProfit.textContent = '$' + industryProfitValue.toFixed(2);
             totalFeed.textContent = totalFeedKg.toFixed(1) + ' kg';
             feedBags.textContent = feedBagsNeeded.toFixed(1);
             feedCost.textContent = '$' + totalFeedCost.toFixed(2);
-            totalWater.textContent = totalWaterLiters.toFixed(0) + ' liters';
+            totalWater.textContent = totalWaterLiters.toFixed(0) + ' L';
+            
+            // Update net profit card styling based on positive/negative
+            if (netProfitValue >= 0) {
+                netProfitCard.className = 'result-card blue';
+            } else {
+                netProfitCard.className = 'result-card red';
+            }
         }
         
         // Add event listeners to all inputs
